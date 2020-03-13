@@ -25,6 +25,7 @@ We use [SemVer](http://semver.org/) for versioning. Declare your dependencies us
 
 ## Authors
 * **Tim Leavitt** - *Initial implementation* - [timleavitt](http://github.com/timleavitt)
+
 See also the list of [contributors](contributors) who participated in this project.
 
 ## License
