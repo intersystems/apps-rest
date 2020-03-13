@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.com/intersystems/TestCoverage.svg?branch=master)](https://travis-ci.com/intersystems/TestCoverage) [![codecov](https://codecov.io/gh/intersystems/TestCoverage/branch/master/graph/badge.svg)](https://codecov.io/gh/intersystems/TestCoverage)
-
 # AppS.REST
 A framework for building secure REST APIs to existing persistent classes and business logic in the InterSystems IRIS Data Platform.
 
