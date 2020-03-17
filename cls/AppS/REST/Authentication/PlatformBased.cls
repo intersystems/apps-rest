@@ -1,4 +1,6 @@
-Class UnitTest.AppS.REST.Sample.Authentication Extends AppS.REST.Authentication
+/// A basic authentication option that uses platform-based (for example, username/password or delegated) authentication.
+/// Logout ends the CSP session (a no-op if sessions are not used).
+Class AppS.REST.Authentication.PlatformBased Extends AppS.REST.Authentication
 {
 
 /// Implement to define custom authentication logic that will be run OnPreDispatch.

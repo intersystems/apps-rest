@@ -5,7 +5,7 @@ Parameter UseSession = 1;
 
 ClassMethod AuthenticationStrategy() As %Dictionary.CacheClassname
 {
-    Quit "UnitTest.AppS.REST.Sample.Authentication"
+    Quit "AppS.REST.Authentication.PlatformBased"
 }
 
 ClassMethod GetUserResource(pFullUserInfo As %DynamicObject) As UnitTest.AppS.REST.Sample.UserContext
