@@ -8,7 +8,7 @@ ClassMethod AuthenticationStrategy() As %Dictionary.CacheClassname
     Quit "UnitTest.AppS.REST.Sample.Authentication"
 }
 
-ClassMethod GetUserResource(pFullUserInfo As %DynamicObject) As AppS.REST.Model.Resource
+ClassMethod GetUserResource(pFullUserInfo As %DynamicObject) As UnitTest.AppS.REST.Sample.UserContext
 {
 	Quit ##class(UnitTest.AppS.REST.Sample.UserContext).%New()
 }

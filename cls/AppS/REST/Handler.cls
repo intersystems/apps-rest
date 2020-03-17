@@ -10,7 +10,7 @@ Class AppS.REST.Handler Extends %CSP.REST [ System = 4 ]
 /// <ul>
 /// <li> pFullUserInfo: dynamic object with full user info provided by the authentication strategy
 /// <ul>
-ClassMethod GetUserResource(pFullUserInfo As %DynamicObject) As AppS.REST.Model.Resource
+ClassMethod GetUserResource(pFullUserInfo As %DynamicObject) As AppS.REST.Model.ISerializable
 {
 	Quit $$$NULLOREF
 }
