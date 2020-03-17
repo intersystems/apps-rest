@@ -12,7 +12,7 @@ zpm "install apps.rest"
 ```
 
 ## User Guide
-TODO
+See [AppS.REST User Guide](docs/user-guide.md).
 
 ## Support
 If you find a bug or would like to request an enhancement, [report an issue](https://github.com/intersystems/apps-rest/issues/new). If you have a question, feel free to post it on the [InterSystems Developer Community](https://community.intersystems.com/).
