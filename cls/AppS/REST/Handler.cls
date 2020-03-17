@@ -32,6 +32,9 @@ Parameter CONVERTINPUTSTREAM = 1;
 XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 {
 <Routes>
+<!-- Metadata route -->
+<Route Url="/\$metadata" Method="GET" Call="AppS.REST.Documentation.Generator:GetSwagger" />
+
 <!-- Authentication routes -->
 <Route Url="/auth/status" Method="GET" Call="GetUserInfo" />
 <Route Url="/auth/logout" Method="POST" Call="LogOut" />
