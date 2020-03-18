@@ -120,14 +120,14 @@ DELETE&nbsp;/:resource/:id | Deletes the instance of the resource with the speci
  
  Note - Studio will help with code completion for XML in this namespace.
  
-[UnitTest.AppS.REST.Sample.Model.Person](https://github.com/intersystems/apps-rest/blob/master/internal/testing/unit_tests/UnitTest/AppS/REST/Sample/Model/Person.cls) has examples covering the full range of action capabilities.
+[UnitTest.AppS.REST.Sample.Model.Person](https://github.com/intersystems/apps-rest/blob/master/internal/testing/unit_tests/UnitTest/AppS/REST/Sample/Model/Person.cls) has annotated examples covering the full range of action capabilities. As a general guideline, do ensure that the HTTP verb matches the behavior of the endpoint (e.g., PUT and DELETE are idempotent, GET is safe, POST is neither).
 
 #### Action Endpoints
 
 HTTP&nbsp;Verbs&nbsp;+&nbsp;Endpoint|Function
 ---|---
-​GET,&nbsp;PUT,&nbsp;POST,&nbsp;DELETE&nbsp;/:resource/$:action|Performs the named action on the specified resource. Constraints and format of URL parameters, body, and response contents will vary from action to action, but are well-defined.
-​​​​GET,&nbsp;PUT,&nbsp;POST,&nbsp;DELETE&nbsp;/:resource/:id/$:action|Performs the named action on the specified resource instance. Constraints and format of URL parameters, body, and response contents will vary from action to action, but are well-defined.
+GET,&nbsp;PUT,&nbsp;POST,&nbsp;DELETE&nbsp;/:resource/$:action|Performs the named action on the specified resource. Constraints and format of URL parameters, body, and response contents will vary from action to action, but are well-defined.
+GET,&nbsp;PUT,&nbsp;POST,&nbsp;DELETE&nbsp;/:resource/:id/$:action|Performs the named action on the specified resource instance. Constraints and format of URL parameters, body, and response contents will vary from action to action, but are well-defined.
 
 ## Related Topics in InterSystems Documentation
 
