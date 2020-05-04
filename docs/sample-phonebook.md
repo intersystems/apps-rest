@@ -291,4 +291,4 @@ And that's it! We now have a fully-functional REST API.
 
 # Further reading
 
-For a different perspective on AppS.REST, check out the (User Guide)[user-guide.md].
+For a different perspective on AppS.REST, check out the [User Guide](user-guide.md).
