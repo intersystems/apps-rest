@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Document name="Sample.Phonebook.ZPM"><Module>
+  <Name>Sample.Phonebook</Name>
+  <Version>1.0.0</Version>
+  <Packaging>module</Packaging>
+  <Dependencies>
+    <ModuleReference>
+        <Name>AppS.REST</Name>
+        <Version>1.x</Version>
+    </ModuleReference>
+  </Dependencies>
+  <Resource Name="Sample.Phonebook.PKG" />
+  <CSPApplication Name="/csp/phonebook-sample/api"
+    Url="/csp/${namespace}/phonebook-sample/api"
+    DispatchClass="Sample.Phonebook.REST.Handler"
+    CookiePath="/csp/${namespace}/phonebook-sample"
+    PasswordAuthEnabled="1"
+    Path="/csp/phonebook-sample/api"
+    Recurse="1"
+    UnauthenticatedEnabled="0"
+    Generated="true"/>
+  <LifecycleClass>Module</LifecycleClass>
+  <InstallerClass>Sample.Phonebook.Installer</InstallerClass>
+</Module>
+</Document></Export>

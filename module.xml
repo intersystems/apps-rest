@@ -2,7 +2,7 @@
 <Export generator="Cache" version="25">
 <Document name="AppS.REST.ZPM"><Module>
   <Name>AppS.REST</Name>
-  <Version>1.0.0+snapshot</Version>
+  <Version>1.0.0</Version>
   <Packaging>module</Packaging>
   <Resource Name="AppS.REST.PKG" />
   <Resource Name="AppS.Util.Buffer.CLS" />
