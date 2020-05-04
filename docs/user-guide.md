@@ -1,5 +1,7 @@
 # AppS.REST User Guide
 
+For a step-by-step tutorial, see [AppS.REST Tutorial and Sample Application: Contact List](sample-phonebook.md).
+
 ## Prerequisites
 
 AppS.REST requires InterSystems IRIS Data Platform 2018.1 or later.

@@ -11,6 +11,9 @@ If you already have the [ObjectScript Package Manager](https://openexchange.inte
 zpm "install apps.rest"
 ```
 
+### Tutorial
+For a step-by-step tutorial, see [AppS.REST Tutorial and Sample Application: Contact List](sample-phonebook.md).
+
 ## User Guide
 See [AppS.REST User Guide](docs/user-guide.md).
 
