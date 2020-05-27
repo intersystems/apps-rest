@@ -1,4 +1,4 @@
-Class Sample.Phonebook.Data.Person Extends (%Persistent, %Populate, %JSON.Adaptor, AppS.REST.Model.Adaptor)
+Class Sample.Phonebook.Model.Person Extends (%Persistent, %Populate, %JSON.Adaptor, AppS.REST.Model.Adaptor)
 {
 
 Parameter RESOURCENAME = "contact";
@@ -7,7 +7,7 @@ Property RowID As %String(%JSONFIELDNAME = "_id", %JSONINCLUDE = "outputonly") [
 
 Property Name As %String(%JSONFIELDNAME = "name");
 
-Relationship PhoneNumbers As Sample.Phonebook.Data.PhoneNumber(%JSONFIELDNAME = "phones", %JSONINCLUDE = "outputonly", %JSONREFERENCE = "object") [ Cardinality = children, Inverse = Person ];
+Relationship PhoneNumbers As Sample.Phonebook.Model.PhoneNumber(%JSONFIELDNAME = "phones", %JSONINCLUDE = "outputonly", %JSONREFERENCE = "object") [ Cardinality = children, Inverse = Person ];
 
 /// Checks the user's permission for a particular operation on a particular record.
 /// <var>pOperation</var> may be one of:
@@ -24,7 +24,7 @@ ClassMethod CheckPermission(pID As %String, pOperation As %String, pUserContext 
         (pOperation = "ACTION:add-phone") || (pOperation = "ACTION:find-by-phone")
 }
 
-Method AddPhoneNumber(phoneNumber As Sample.Phonebook.Data.PhoneNumber) As Sample.Phonebook.Data.Person
+Method AddPhoneNumber(phoneNumber As Sample.Phonebook.Model.PhoneNumber) As Sample.Phonebook.Model.Person
 {
     Set phoneNumber.Person = $This
     $$$ThrowOnError(phoneNumber.%Save())
@@ -34,7 +34,7 @@ Method AddPhoneNumber(phoneNumber As Sample.Phonebook.Data.PhoneNumber) As Sampl
 Query FindByPhone(phoneFragment As %String) As %SQLQuery
 {
 select distinct Person
-from Sample_Phonebook_Data.PhoneNumber
+from Sample_Phonebook_Model.PhoneNumber
 where $Translate(PhoneNumber,' -+()') [ $Translate(:phoneFragment,' -+()')
 }
 
@@ -61,11 +61,11 @@ Storage Default
 <Value>Name</Value>
 </Value>
 </Data>
-<DataLocation>^Sample.Phonebook.Data.PersonD</DataLocation>
+<DataLocation>^Sample.Phonebook.Model.PersonD</DataLocation>
 <DefaultData>PersonDefaultData</DefaultData>
-<IdLocation>^Sample.Phonebook.Data.PersonD</IdLocation>
-<IndexLocation>^Sample.Phonebook.Data.PersonI</IndexLocation>
-<StreamLocation>^Sample.Phonebook.Data.PersonS</StreamLocation>
+<IdLocation>^Sample.Phonebook.Model.PersonD</IdLocation>
+<IndexLocation>^Sample.Phonebook.Model.PersonI</IndexLocation>
+<StreamLocation>^Sample.Phonebook.Model.PersonS</StreamLocation>
 <Type>%Storage.Persistent</Type>
 }
 

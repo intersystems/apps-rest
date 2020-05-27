@@ -8,9 +8,9 @@ ClassMethod OnConfigureComponent(pNamespace As %String, pVerbose As %Boolean = 0
         If pVerbose {
             Write !,"[Sample.Phonebook.Installer:OnConfigureComponent] Populating sample data... "
         }
-        $$$ThrowOnError(##class(Sample.Phonebook.Data.Person).%KillExtent())
-        $$$ThrowOnError(##class(Sample.Phonebook.Data.Person).Populate(100))
-        $$$ThrowOnError(##class(Sample.Phonebook.Data.PhoneNumber).Populate(300))
+        $$$ThrowOnError(##class(Sample.Phonebook.Model.Person).%KillExtent())
+        $$$ThrowOnError(##class(Sample.Phonebook.Model.Person).Populate(100))
+        $$$ThrowOnError(##class(Sample.Phonebook.Model.PhoneNumber).Populate(300))
         If pVerbose {
             Write "done."
         }

@@ -1,9 +1,9 @@
-Class Sample.Phonebook.REST.Model.PhoneNumber Extends AppS.REST.Model.Proxy
+Class Sample.Phonebook.REST.Model.PhoneNumber Extends AppS.REST.Model.Proxy [ DependsOn = Sample.Phonebook.Model.PhoneNumber ]
 {
 
 Parameter RESOURCENAME = "phone-number";
 
-Parameter SOURCECLASS = "Sample.Phonebook.Data.PhoneNumber";
+Parameter SOURCECLASS = "Sample.Phonebook.Model.PhoneNumber";
 
 Parameter JSONMAPPING = "PhoneNumberWithPerson";
 

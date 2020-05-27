@@ -17,19 +17,19 @@ This automatically configures a REST-enabled web application with the sample dis
 Suppose as a starting point the following data model in two simple ObjectScript classes, with storage definitions omitted for simplicity:
 
 ```ObjectScript
-Class Sample.Phonebook.Data.Person Extends %Persistent
+Class Sample.Phonebook.Model.Person Extends %Persistent
 {
 
 Property Name As %String;
 
-Relationship PhoneNumbers As Sample.Phonebook.Data.PhoneNumber [ Cardinality = children, Inverse = Person ];
+Relationship PhoneNumbers As Sample.Phonebook.Model.PhoneNumber [ Cardinality = children, Inverse = Person ];
 
 }
 
-Class Sample.Phonebook.Data.PhoneNumber Extends %Persistent
+Class Sample.Phonebook.Model.PhoneNumber Extends %Persistent
 {
 
-Relationship Person As Sample.Phonebook.Data.Person [ Cardinality = parent, Inverse = PhoneNumbers ];
+Relationship Person As Sample.Phonebook.Model.Person [ Cardinality = parent, Inverse = PhoneNumbers ];
 
 Property PhoneNumber As %String;
 
@@ -97,7 +97,7 @@ The JSON projection via %JSON.Adaptor doesn't include the Row ID, and that's han
 At this stage, the classes will look like:
 
 ```ObjectScript
-Class Sample.Phonebook.Data.Person Extends (%Persistent, %JSON.Adaptor)
+Class Sample.Phonebook.Model.Person Extends (%Persistent, %JSON.Adaptor)
 {
 
 Parameter RESOURCENAME = "contact";
@@ -106,15 +106,15 @@ Property RowID As %String(%JSONFIELDNAME = "_id", %JSONINCLUDE = "outputonly") [
 
 Property Name As %String(%JSONFIELDNAME = "name");
 
-Relationship PhoneNumbers As Sample.Phonebook.Data.PhoneNumber(%JSONFIELDNAME = "phones", %JSONINCLUDE="outputonly", %JSONREFERENCE = "object") [ Cardinality = children, Inverse = Person ];
+Relationship PhoneNumbers As Sample.Phonebook.Model.PhoneNumber(%JSONFIELDNAME = "phones", %JSONINCLUDE="outputonly", %JSONREFERENCE = "object") [ Cardinality = children, Inverse = Person ];
 
 }
 
 
-Class Sample.Phonebook.Data.PhoneNumber Extends (%Persistent, %JSON.Adaptor)
+Class Sample.Phonebook.Model.PhoneNumber Extends (%Persistent, %JSON.Adaptor)
 {
 
-Relationship Person As Sample.Phonebook.Data.Person(%JSONINCLUDE = "none") [ Cardinality = parent, Inverse = PhoneNumbers ];
+Relationship Person As Sample.Phonebook.Model.Person(%JSONINCLUDE = "none") [ Cardinality = parent, Inverse = PhoneNumbers ];
 
 Property RowID As %String(%JSONFIELDNAME = "_id", %JSONINCLUDE = "outputonly") [ Calculated, SqlComputeCode = {Set {*} = {%%ID}}, SqlComputed, Transient ];
 
@@ -149,7 +149,7 @@ Before getting started with REST, it's handy to have a REST client. There are lo
 
 > Note: You can't just paste requests into your web browser because you need to set "Accepts" HTTP header to "application/json" before sending a request.
 
-we have a data model that defines how to store data in the database, and how to project it into JSON format. Now we need to expose it via a REST API. There are 3 steps for each class that is REST-enabled:
+We have a data model that defines how to store data in the database, and how to project it into JSON format. Now we need to expose it via a REST API. There are 3 steps for each class that is REST-enabled:
 
 1. Extend `AppS.REST.Model.Adaptor`
 2. Define its REST endpoint via the `RESOURCENAME` parameter
@@ -160,7 +160,7 @@ we have a data model that defines how to store data in the database, and how to 
 To REST-enable the Person class to allow listing all of the people, first extend `AppS.REST.Model.Adaptor`:
 
 ```ObjectScript
-Class Sample.Phonebook.Data.Person Extends (%Persistent, %Populate, %JSON.Adaptor, AppS.REST.Model.Adaptor)
+Class Sample.Phonebook.Model.Person Extends (%Persistent, %Populate, %JSON.Adaptor, AppS.REST.Model.Adaptor)
 ```
 
 ### Define the REST endpoint
@@ -173,7 +173,7 @@ Parameter RESOURCENAME = "contact";
 
 ### Set permissions for the endpoint
 
-And a `CheckPermission` method to the class. For `Sample.Phonebook.REST.Model.PhoneNumber` we will only allow the QUERY operation.
+Add a `CheckPermission` method to the class. For `Sample.Phonebook.REST.Model.PhoneNumber` we will only allow the QUERY operation.
 
 `CheckPermission` takes the following input parameters:
 
@@ -212,7 +212,7 @@ ClassMethod CheckPermission(pID As %String, pOperation As %String, pUserContext 
 }
 ```
 
-Remember that the `%JSONINCLUDE` property parameters on `Sample.Phonebook.Data.Person` are set to `"outputonly"` on all but the `Name` property. In other words, if you specify `_id` and `phones` on an instance of `%DynamicObject` [RS: first mention of %DynamicObject. Where'd that come from?] and pass it to `%JSONImport()` on an instance of `Sample.Phonebook.Data.Person`, those properties will just be ignored.
+Remember that the `%JSONINCLUDE` property parameters on `Sample.Phonebook.Model.Person` are set to `"outputonly"` on all but the `Name` property. In other words, if you specify `_id` and `phones` in JSON and pass it to `%JSONImport()` on an instance of `Sample.Phonebook.Model.Person`, those properties will just be ignored.
 
 This is a feature - and it provides for security within the REST tooling provided by the Apps.REST framework. It is important to think about security in this way up-front, to make sure that there is no exposure for modification of data outside of the desired scope.
 
@@ -230,9 +230,9 @@ From your REST client, try the following:
 
 ## REST-enabling Phone Number Operations
 
-Extending `AppS.REST.Model.Adaptor` like we did on `Sample.Phonebook.Data.Person` is one of two ways to REST-enable access to data; it operates by inheritance (that is, you extend it to enable REST access to the class that extends it).
+Extending `AppS.REST.Model.Adaptor` like we did on `Sample.Phonebook.Model.Person` is one of two ways to REST-enable access to data; it operates by inheritance (that is, you extend it to enable REST access to the class that extends it).
 
-The other approach is to use `AppS.REST.Model.Proxy`. [RS: Why another approach? Tell the reader why we need another way.] A Proxy implementation stands separately from the class of data being accessed. `RESOURCENAME` and `CheckPermission` are overridden as before, but the `SOURCECLASS` parameter must also be specified, pointing to a JSON-enabled persistent class. For example, to enable creation, update and deletion of phone numbers without making any further changes to `Sample.Phonebook.Data.PhoneNumber`, a proxy may be defined as follows:
+The other approach is to use `AppS.REST.Model.Proxy`. A Proxy implementation stands separately from the class of data being accessed. This is necessary if you need to provide multiple representations of the same data, and also may be preferable if you want to keep the REST aspects of permissions, actions, etc. separate from the persistent class. `RESOURCENAME` and `CheckPermission` are overridden as before, but the `SOURCECLASS` parameter must also be specified, pointing to a JSON-enabled persistent class. For example, to enable creation, update and deletion of phone numbers without making any further changes to `Sample.Phonebook.Model.PhoneNumber`, a proxy may be defined as follows:
 
 ```ObjectScript
 Class Sample.Phonebook.REST.Model.PhoneNumber Extends AppS.REST.Model.Proxy
@@ -240,7 +240,7 @@ Class Sample.Phonebook.REST.Model.PhoneNumber Extends AppS.REST.Model.Proxy
 
 Parameter RESOURCENAME = "phone-number";
 
-Parameter SOURCECLASS = "Sample.Phonebook.Data.PhoneNumber";
+Parameter SOURCECLASS = "Sample.Phonebook.Model.PhoneNumber";
 
 ClassMethod CheckPermission(pID As %String, pOperation As %String, pUserContext As AppS.REST.Authentication.PlatformUser) As %Boolean
 {
@@ -256,7 +256,7 @@ Adding a new phone number is more complicated, though; the REST projection for p
 
 ### Adding a Phone Number via an Alternative JSON Mapping
 
-`%JSON.Adaptor` supports creation of multiple JSON mappings, and AppS.REST can use this feature to handle multiple representations of the same resource. To start out, create an XData block in `Sample.Phonebook.Data.PhoneNumber` as follows:
+`%JSON.Adaptor` supports creation of multiple JSON mappings, and AppS.REST can use this feature to handle multiple representations of the same resource. To start out, create an XData block in `Sample.Phonebook.Model.PhoneNumber` as follows:
 
 ```xml
 XData PhoneNumberWithPerson [ XMLNamespace = "http://www.intersystems.com/jsonmapping" ]
@@ -280,10 +280,10 @@ Suppose a multi-tenant environment where each person only has access to a subset
 
 Instead of viewing `"CREATE"` of a phone number for a contact as an action on the phone-number resource, it could be reimagined as an action that is taken on the contact. Security checking could live alongside that of the contact, and would be the same as for other operations on that contact. (The same could also apply for other operations on phone numbers.)
 
-First, we'll create an instance method in `Sample.Phonebook.Data.Person` that takes an instance of `Sample.Phonebook.Data.PhoneNumber`, sets the Person for that phone number to the current instance, saves the phone number, and returns the current Person instance. This is very simple with ObjectScript:
+First, we'll create an instance method in `Sample.Phonebook.Model.Person` that takes an instance of `Sample.Phonebook.Model.PhoneNumber`, sets the Person for that phone number to the current instance, saves the phone number, and returns the current Person instance. This is very simple with ObjectScript:
 
 ```ObjectScript
-Method AddPhoneNumber(phoneNumber As Sample.Phonebook.Data.PhoneNumber) As Sample.Phonebook.Data.Person
+Method AddPhoneNumber(phoneNumber As Sample.Phonebook.Model.PhoneNumber) As Sample.Phonebook.Model.Person
 {
     Set phoneNumber.Person = $This
     $$$ThrowOnError(phoneNumber.%Save())
@@ -291,7 +291,7 @@ Method AddPhoneNumber(phoneNumber As Sample.Phonebook.Data.PhoneNumber) As Sampl
 }
 ```
 
-Next, we'll define a new XData block called "ActionMap" in `Sample.Phonebook.Data.Person`, as follows:
+Next, we'll define a new XData block called "ActionMap" in `Sample.Phonebook.Model.Person`, as follows:
 
 ```xml
 XData ActionMap [ XMLNamespace = "http://www.intersystems.com/apps/rest/action" ]
@@ -304,7 +304,7 @@ XData ActionMap [ XMLNamespace = "http://www.intersystems.com/apps/rest/action" 
 }
 ```
 
-This says that a POST request to /contact/(contact ID)/$add-phone will call the AddPhoneNumber of that instance, providing the automatically-deserialized phoneNumber object from the body (based on the argument type in the method signature) and responding with a JSON export of the updated instance of `Sample.Phonebook.Data.Person` (based on the return type in the method signature).
+This says that a POST request to /contact/(contact ID)/$add-phone will call the AddPhoneNumber of that instance, providing the automatically-deserialized phoneNumber object from the body (based on the argument type in the method signature) and responding with a JSON export of the updated instance of `Sample.Phonebook.Model.Person` (based on the return type in the method signature).
 
 Now that the "add-phone" action has been defined, we must also enable access to it in CheckPermission:
 
@@ -328,7 +328,7 @@ Let's define the class query first:
 Query FindByPhone(phoneFragment As %String) As %SQLQuery
 {
 select distinct Person
-from Sample_Phonebook_Data.PhoneNumber
+from Sample_Phonebook_Model.PhoneNumber
 where $Translate(PhoneNumber,' -+()') [ $Translate(:phoneFragment,' -+()')
 }
 ```

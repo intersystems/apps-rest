@@ -1,7 +1,7 @@
-Class Sample.Phonebook.Data.PhoneNumber Extends (%Persistent, %Populate, %JSON.Adaptor)
+Class Sample.Phonebook.Model.PhoneNumber Extends (%Persistent, %Populate, %JSON.Adaptor)
 {
 
-Relationship Person As Sample.Phonebook.Data.Person(%JSONINCLUDE = "none") [ Cardinality = parent, Inverse = PhoneNumbers ];
+Relationship Person As Sample.Phonebook.Model.Person(%JSONINCLUDE = "none") [ Cardinality = parent, Inverse = PhoneNumbers ];
 
 Property RowID As %String(%JSONFIELDNAME = "_id", %JSONINCLUDE = "outputonly") [ Calculated, SqlComputeCode = {Set {*} = {%%ID}}, SqlComputed, Transient ];
 
@@ -34,7 +34,7 @@ Storage Default
 </Data>
 <DataLocation>{%%PARENT}("PhoneNumbers")</DataLocation>
 <DefaultData>PhoneNumberDefaultData</DefaultData>
-<IdLocation>^Sample.Phonebook.Data.PersonC("PhoneNumbers")</IdLocation>
+<IdLocation>^Sample.Phonebook.Model.PersonC("PhoneNumbers")</IdLocation>
 <IndexLocation>^Sample.Phonebo6771.PhoneNumberI</IndexLocation>
 <StreamLocation>^Sample.Phonebo6771.PhoneNumberS</StreamLocation>
 <Type>%Storage.Persistent</Type>
