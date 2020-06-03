@@ -1,5 +1,7 @@
 # AppS.REST User Guide
 
+For a step-by-step tutorial, see [AppS.REST Tutorial and Sample Application: Contact List](sample-phonebook.md).
+
 ## Prerequisites
 
 AppS.REST requires InterSystems IRIS Data Platform 2018.1 or later.
@@ -15,7 +17,8 @@ Installation is done via the [Community Package Manager](https://github.com/inte
 Create a subclass of `AppS.REST.Handler`. AppS.REST extends %CSP.REST, and for the most part this subclass may include overrides the same as a subclass of %CSP.REST.
 
 For example, a user may add overrides to use the following %CSP.REST features:
-* The `UseSession` class parameter if CSP sessions should be used (by default, they are not, as they are not stateless).
+
+* The `UseSession` class parameter if CSP sessions should be used (by default, they are not, as CSP sessions are not stateless).
 * CORS-related parameters and methods if CORS support is required.
 
 However, **do not override the UrlMap XData block**; the routes are standardized and you should not need to edit/amend them.
@@ -47,7 +50,7 @@ In either approach, the `GetUserResource` method in the application's `AppS.REST
       Quit ##class(UnitTest.AppS.REST.Sample.UserContext).%New()
     }
 
-### Authentrication-related Endpoints
+### Authentication-related Endpoints
 
 HTTP Verb + Endpoint|Function
 ---|---
@@ -117,9 +120,9 @@ DELETE&nbsp;/:resource/:id | Deletes the instance of the resource with the speci
     XData ActionMap [ XMLNamespace = "http://www.intersystems.com/apps/rest/action" ]
     {
     }
- 
+
  Note - Studio will help with code completion for XML in this namespace.
- 
+
 [UnitTest.AppS.REST.Sample.Model.Person](https://github.com/intersystems/apps-rest/blob/master/internal/testing/unit_tests/UnitTest/AppS/REST/Sample/Model/Person.cls) has annotated examples covering the full range of action capabilities. As a general guideline, do ensure that the HTTP verb matches the behavior of the endpoint (e.g., PUT and DELETE are idempotent, GET is safe, POST is neither).
 
 #### Action Endpoints
