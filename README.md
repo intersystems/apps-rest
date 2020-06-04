@@ -12,16 +12,16 @@ zpm "install apps.rest"
 ```
 
 ### Tutorial
-For a step-by-step tutorial, see [AppS.REST Tutorial and Sample Application: Contact List](docs/sample-phonebook.md).
+For a step-by-step tutorial, see [AppS.REST Tutorial and Sample Application: Contact List](https://github.com/intersystems/apps-rest/docs/sample-phonebook.md).
 
 ## User Guide
-See [AppS.REST User Guide](docs/user-guide.md).
+See [AppS.REST User Guide](https://github.com/intersystems/apps-rest/docs/user-guide.md).
 
 ## Support
 If you find a bug or would like to request an enhancement, [report an issue](https://github.com/intersystems/apps-rest/issues/new). If you have a question, feel free to post it on the [InterSystems Developer Community](https://community.intersystems.com/).
 
 ## Contributing
-Please read [contributing](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [contributing](https://github.com/intersystems/apps-rest/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 We use [SemVer](http://semver.org/) for versioning. Declare your dependencies using the community package manager for the appropriate level of risk.
@@ -29,7 +29,7 @@ We use [SemVer](http://semver.org/) for versioning. Declare your dependencies us
 ## Authors
 * **Tim Leavitt** - *Initial implementation* - [timleavitt](http://github.com/timleavitt)
 
-See also the list of [contributors](contributors) who participated in this project.
+See also the list of [contributors](https://github.com/intersystems/apps-rest/graphs/contributors) who participated in this project.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/intersystems/apps-rest/LICENSE) file for details.
