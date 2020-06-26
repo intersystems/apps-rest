@@ -16,7 +16,7 @@ jobs:
     env:
       container_image: intersystemsdc/iris-community:2019.4.0.383.0-zpm
       instance: iris
-      package: apps-rest
+      package: apps.rest
       build_flags: -verbose
       test_flags: >-
        -verbose -DUnitTest.ManagerClass=TestCoverage.Manager -DUnitTest.JUnitOutput=/source/junit.xml
