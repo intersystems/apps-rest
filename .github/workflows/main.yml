@@ -18,11 +18,12 @@ jobs:
       instance: iris
       package: apps-rest
       build_flags: -verbose
-      test_flags: >
+      test_flags: >-
        -verbose -DUnitTest.ManagerClass=TestCoverage.Manager -DUnitTest.JUnitOutput=/source/junit.xml
        -DUnitTest.FailuresAreFatal=1 -DUnitTest.Manager=TestCoverage.Manager
        -DUnitTest.UserParam.CoverageReportClass=TestCoverage.Report.Cobertura.ReportGenerator
        -DUnitTest.UserParam.CoverageReportFile=/source/coverage.xml
+    
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
