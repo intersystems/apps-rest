@@ -23,7 +23,6 @@ jobs:
        -DUnitTest.FailuresAreFatal=1 -DUnitTest.Manager=TestCoverage.Manager
        -DUnitTest.UserParam.CoverageReportClass=TestCoverage.Report.Cobertura.ReportGenerator
        -DUnitTest.UserParam.CoverageReportFile=/source/coverage.xml
-
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
