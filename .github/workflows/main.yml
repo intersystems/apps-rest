@@ -28,11 +28,17 @@ jobs:
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    
+    # Checks out this repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-
-    # Runs a single command using the runners shell
-    - name: Install
+    
+    # Also need to check out rfns/forgery until it's installable via ZPM
+    - uses: actions/checkout@v2
+      with:
+        repository: rfns/forgery
+        path: forgery
+    
+    - name: Run Container
       run: |
         # Run InterSystems IRIS instance
         docker pull $container_image
@@ -40,11 +46,18 @@ jobs:
         echo halt > wait
         # Wait for instance to be ready
         until docker exec --interactive $instance iris session $instance < wait; do sleep 1; done
-        # Install TestCoverage
+    
+    - name: Install TestCoverage
+      run: |
         echo "zpm \"install testcoverage\":1:1" > install-testcoverage
         docker exec --interactive $instance iris session $instance -B < install-testcoverage
         # Workaround for permissions issues in TestCoverage (creating directory for source export)
         chmod 777 $GITHUB_WORKSPACE
+    
+    - name: Install Forgery
+      run: |
+        echo "zpm \"load /source/forgery\":1:1" > load-forgery
+        docker exec --interactive $instance iris session $instance -B < install-testcoverage
 
     # Runs a set of commands using the runners shell
     - name: Build and Test
