@@ -57,7 +57,7 @@ jobs:
     - name: Install Forgery
       run: |
         echo "zpm \"load /source/forgery\":1:1" > load-forgery
-        docker exec --interactive $instance iris session $instance -B < install-testcoverage
+        docker exec --interactive $instance iris session $instance -B < load-forgery
 
     # Runs a set of commands using the runners shell
     - name: Build and Test
