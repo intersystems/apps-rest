@@ -19,6 +19,7 @@ jobs:
       package: apps.rest
       # Load in -dev mode to get unit test code preloaded
       build_flags: -dev -verbose
+      test_package: UnitTest
       test_flags: >-
        -verbose -DUnitTest.ManagerClass=TestCoverage.Manager -DUnitTest.JUnitOutput=/source/junit.xml
        -DUnitTest.FailuresAreFatal=1 -DUnitTest.Manager=TestCoverage.Manager
@@ -50,6 +51,8 @@ jobs:
       run: |
         # Run build
         echo "zpm \"load /source $build_flags\":1:1" > build
+        # Test package is compiled first as a workaround for some dependency issues.
+        echo "do $System.OBJ.CompilePackage(\"$test_package\",\"ckd\") " > test
         # Run tests
-        echo "zpm \"$package test -only $test_flags\":1:1" > test
+        echo "zpm \"$package test -only $test_flags\":1:1" >> test
         docker exec --interactive $instance iris session $instance -B < build && docker exec --interactive $instance iris session $instance -B < test && bash <(curl -s https://codecov.io/bash)
