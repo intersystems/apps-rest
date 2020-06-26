@@ -1,0 +1,71 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on: [push, pull_request]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    env:
+      container_image: intersystemsdc/iris-community:2019.4.0.383.0-zpm
+      instance: iris
+      package: apps.rest
+      # Load in -dev mode to get unit test code preloaded
+      build_flags: -dev -verbose
+      test_package: UnitTest
+      test_flags: >-
+       -verbose -DUnitTest.ManagerClass=TestCoverage.Manager -DUnitTest.JUnitOutput=/source/junit.xml
+       -DUnitTest.FailuresAreFatal=1 -DUnitTest.Manager=TestCoverage.Manager
+       -DUnitTest.UserParam.CoverageReportClass=TestCoverage.Report.Cobertura.ReportGenerator
+       -DUnitTest.UserParam.CoverageReportFile=/source/coverage.xml
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    
+    # Checks out this repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    
+    # Also need to check out rfns/forgery until it's installable via ZPM
+    - uses: actions/checkout@v2
+      with:
+        repository: timleavitt/forgery
+        path: forgery
+    
+    - name: Run Container
+      run: |
+        # Run InterSystems IRIS instance
+        docker pull $container_image
+        docker run -d -h $instance --name $instance -v $GITHUB_WORKSPACE:/source --init $container_image
+        echo halt > wait
+        # Wait for instance to be ready
+        until docker exec --interactive $instance iris session $instance < wait; do sleep 1; done
+    
+    - name: Install TestCoverage
+      run: |
+        echo "zpm \"install testcoverage\":1:1" > install-testcoverage
+        docker exec --interactive $instance iris session $instance -B < install-testcoverage
+        # Workaround for permissions issues in TestCoverage (creating directory for source export)
+        chmod 777 $GITHUB_WORKSPACE
+    
+    - name: Install Forgery
+      run: |
+        echo "zpm \"load /source/forgery\":1:1" > load-forgery
+        docker exec --interactive $instance iris session $instance -B < load-forgery
+
+    # Runs a set of commands using the runners shell
+    - name: Build and Test
+      run: |
+        # Run build
+        echo "zpm \"load /source $build_flags\":1:1" > build
+        # Test package is compiled first as a workaround for some dependency issues.
+        echo "do \$System.OBJ.CompilePackage(\"$test_package\",\"ckd\") " > test
+        # Run tests
+        echo "zpm \"$package test -only $test_flags\":1:1" >> test
+        docker exec --interactive $instance iris session $instance -B < build && docker exec --interactive $instance iris session $instance -B < test && bash <(curl -s https://codecov.io/bash)
