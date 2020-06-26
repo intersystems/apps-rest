@@ -35,7 +35,7 @@ jobs:
     # Also need to check out rfns/forgery until it's installable via ZPM
     - uses: actions/checkout@v2
       with:
-        repository: rfns/forgery
+        repository: timleavitt/forgery
         path: forgery
     
     - name: Run Container
