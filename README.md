@@ -1,3 +1,5 @@
+![CI](https://github.com/intersystems/apps-rest/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/intersystems/apps-rest/branch/master/graph/badge.svg)](https://codecov.io/gh/intersystems/apps-rest)
+
 # AppS.REST
 A framework for building secure REST APIs to existing persistent classes and business logic in the InterSystems IRIS Data Platform.
 
