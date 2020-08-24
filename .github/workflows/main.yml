@@ -77,7 +77,7 @@ jobs:
       with:
         results: /source
     - name: The generated report
-      run: echo "Test report is: ${{ steps.xunit-viewer.outputs.report-file }}"
+      run: echo "Test report is ${{ steps.xunit-viewer.outputs.report-file }}"
     - name: Attach the report
       uses: actions/upload-artifact@v1
       with:
