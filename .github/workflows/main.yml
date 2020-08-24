@@ -25,7 +25,7 @@ jobs:
       # ** FOR GENERAL USE, SHOULD NOT NEED TO CHANGE: **
       instance: iris
       # Note: test_reports value is duplicated in test_flags environment variable
-      test_reports: /test-reports
+      test_reports: test-reports
       test_flags: >-
        -verbose -DUnitTest.ManagerClass=TestCoverage.Manager -DUnitTest.JUnitOutput=/test-reports/junit.xml
        -DUnitTest.FailuresAreFatal=1 -DUnitTest.Manager=TestCoverage.Manager
@@ -51,7 +51,7 @@ jobs:
         chmod 777 $test_reports
         # Run InterSystems IRIS instance
         docker pull $container_image
-        docker run -d -h $instance --name $instance -v $GITHUB_WORKSPACE:/source -v $test_reports:$test_reports --init $container_image
+        docker run -d -h $instance --name $instance -v $GITHUB_WORKSPACE:/source -v $GITHUB_WORKSPACE/$test_reports:/$test_reports --init $container_image
         echo halt > wait
         # Wait for instance to be ready
         until docker exec --interactive $instance iris session $instance < wait; do sleep 1; done
