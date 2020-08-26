@@ -84,7 +84,11 @@ jobs:
       id: xunit-viewer
       uses: AutoModality/action-xunit-viewer@v1
       if: always()
-      continue-on-error: true # Needed to handle poorly formed junit output, for now...
+      with:
+        # With -DUnitTest.FailuresAreFatal=1 a failed unit test will fail the build before this point.
+        # This action would otherwise misinterpret our xUnit style output and fail the build even if
+        # all tests passed.
+        fail: false
     - name: Attach the report
       uses: actions/upload-artifact@v1
       if: always()
