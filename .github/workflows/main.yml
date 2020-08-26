@@ -14,14 +14,20 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      container_image: intersystemsdc/iris-community:2019.4.0.383.0-zpm
-      instance: iris
+      # ** FOR GENERAL USE, LIKELY NEED TO CHANGE: **
       package: apps.rest
-      # Load in -dev mode to get unit test code preloaded
-      build_flags: -dev -verbose
+      container_image: intersystemsdc/iris-community:2019.4.0.383.0-zpm
+      
+      # ** FOR GENERAL USE, MAY NEED TO CHANGE: **
+      build_flags: -dev -verbose # Load in -dev mode to get unit test code preloaded
       test_package: UnitTest
+      
+      # ** FOR GENERAL USE, SHOULD NOT NEED TO CHANGE: **
+      instance: iris
+      # Note: test_reports value is duplicated in test_flags environment variable
+      test_reports: test-reports
       test_flags: >-
-       -verbose -DUnitTest.ManagerClass=TestCoverage.Manager -DUnitTest.JUnitOutput=/source/junit.xml
+       -verbose -DUnitTest.ManagerClass=TestCoverage.Manager -DUnitTest.JUnitOutput=/test-reports/junit.xml
        -DUnitTest.FailuresAreFatal=1 -DUnitTest.Manager=TestCoverage.Manager
        -DUnitTest.UserParam.CoverageReportClass=TestCoverage.Report.Cobertura.ReportGenerator
        -DUnitTest.UserParam.CoverageReportFile=/source/coverage.xml
@@ -40,9 +46,12 @@ jobs:
     
     - name: Run Container
       run: |
+        # Create test_reports directory to share test results before running container
+        mkdir $test_reports
+        chmod 777 $test_reports
         # Run InterSystems IRIS instance
         docker pull $container_image
-        docker run -d -h $instance --name $instance -v $GITHUB_WORKSPACE:/source --init $container_image
+        docker run -d -h $instance --name $instance -v $GITHUB_WORKSPACE:/source -v $GITHUB_WORKSPACE/$test_reports:/$test_reports --init $container_image
         echo halt > wait
         # Wait for instance to be ready
         until docker exec --interactive $instance iris session $instance < wait; do sleep 1; done
@@ -69,3 +78,20 @@ jobs:
         # Run tests
         echo "zpm \"$package test -only $test_flags\":1:1" >> test
         docker exec --interactive $instance iris session $instance -B < build && docker exec --interactive $instance iris session $instance -B < test && bash <(curl -s https://codecov.io/bash)
+
+    # Generate and Upload HTML xUnit report
+    - name: XUnit Viewer
+      id: xunit-viewer
+      uses: AutoModality/action-xunit-viewer@v1
+      if: always()
+      with:
+        # With -DUnitTest.FailuresAreFatal=1 a failed unit test will fail the build before this point.
+        # This action would otherwise misinterpret our xUnit style output and fail the build even if
+        # all tests passed.
+        fail: false
+    - name: Attach the report
+      uses: actions/upload-artifact@v1
+      if: always()
+      with:
+        name: ${{ steps.xunit-viewer.outputs.report-name }}
+        path: ${{ steps.xunit-viewer.outputs.report-dir }}
