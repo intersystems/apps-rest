@@ -79,10 +79,12 @@ jobs:
         echo "zpm \"$package test -only $test_flags\":1:1" >> test
         docker exec --interactive $instance iris session $instance -B < build && docker exec --interactive $instance iris session $instance -B < test && bash <(curl -s https://codecov.io/bash)
 
-    # Generates HTML xUnit report
+    # Generate and Upload HTML xUnit report
     - name: XUnit Viewer
       id: xunit-viewer
       uses: AutoModality/action-xunit-viewer@v1
+      if: always()
+      continue-on-error: true # Needed to handle poorly formed junit output, for now...
     - name: Attach the report
       uses: actions/upload-artifact@v1
       if: always()
