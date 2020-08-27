@@ -37,7 +37,7 @@ jobs:
     # Checks out this repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
     
-    # Also need to check out rfns/forgery until it's installable via ZPM
+    # Also need to check out timleavitt/forgery until the official version installable via ZPM
     - uses: actions/checkout@v2
       with:
         repository: timleavitt/forgery
