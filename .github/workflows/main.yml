@@ -15,7 +15,7 @@ jobs:
     env:
       # ** FOR GENERAL USE, LIKELY NEED TO CHANGE: **
       package: apps.rest
-      container_image: intersystemsdc/iris-community:2019.4.0.383.0-zpm
+      container_image: intersystemsdc/iris-community:latest
       
       # ** FOR GENERAL USE, MAY NEED TO CHANGE: **
       build_flags: -dev -verbose # Load in -dev mode to get unit test code preloaded
