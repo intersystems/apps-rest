@@ -1,4 +1,10 @@
-![CI](https://github.com/intersystems/apps-rest/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/intersystems/apps-rest/branch/master/graph/badge.svg)](https://codecov.io/gh/intersystems/apps-rest)
+---
+
+# Deprecation Notice
+
+This project has been deprecated in favor of its successor, [isc.rest](https://github.com/intersystems/isc-rest), and will not receive further updates. For discussion of migration from apps-rest to isc.rest, see https://github.com/intersystems/isc-rest/discussions/11.
+
+---
 
 # AppS.REST
 A framework for building secure REST APIs to existing persistent classes and business logic in the InterSystems IRIS Data Platform.
