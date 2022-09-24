@@ -1,5 +1,5 @@
 ## apps-rest
- [![Quality Gate Status](https://community.objectscriptquality.com/api/project_badges/measure?project=intersystems_iris_community%2Fapps-rest&metric=alert_status)](https://community.objectscriptquality.com/dashboard?id=intersystems_iris_community%2Fapps-rest 
+ [![Quality Gate Status](https://community.objectscriptquality.com/api/project_badges/measure?project=intersystems_iris_community%2Fapps-rest&metric=alert_status)](https://community.objectscriptquality.com/dashboard?id=intersystems_iris_community%2Fapps-rest)
 
 ---
 
